@@ -1,0 +1,23 @@
+<div class="container-mt5">
+   <div *ngIf="!registerMode" style='text-align: center;'>
+        <h1>Create your projects</h1>
+        <p class="lead">Come on in to view your</p>
+        <div class="text-center">
+            <button (click) = "registerToggle()" class="btn btn-primary btn-large mr-2">Register</button>
+            <button class="btn btn-info btn-large">Learn more</button>
+
+        </div>
+    </div> 
+
+    <div *ngIf="registerMode" class="container">
+        <div class="row justify-content-center">
+            <div class="col-4">
+                <app-register (cancelRegister)="cancelRegisterMode($event)"></app-register> 
+                <!-- this line under is a show-case of what it would look like if parent was sending to child -->
+                <!-- <app-register [usersFromHomeComponent] = "users" (cancelRegister)="cancelRegisterMode($event)"></app-register>  -->
+                <!-- if we're passing something down from parent component to child component we use [] -->
+                <!-- when were sending data to parent then it goes in () and the $event is the event being emitted from child to parent-->
+            </div>
+        </div>
+    </div>
+</div>
