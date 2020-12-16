@@ -61,7 +61,7 @@ namespace API.Data
 
         public void Update(AppUser user)
         {
-            _context.Entry(user).State = EntityState.Modified;
+            _context.Entry(user).State = EntityState.Modified;  //flagged
         }
     }
 }
