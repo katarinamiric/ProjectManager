@@ -26,7 +26,7 @@ namespace API.Controllers
 
         }
 
-
+        // [Authorize(Roles = "Admin")]
         [HttpGet]
         // [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()  //we could've used List<>
@@ -37,6 +37,7 @@ namespace API.Controllers
 
         //api/users/3
         // [Authorize]
+        // [Authorize(Roles = "Member")]
         [HttpGet("{username}")]
         public async Task<ActionResult<MemberDto>> GetUser(string username)  //we could've used List<>
         {

@@ -23,8 +23,7 @@ export class AccountService {  //here we're going to make a request to the API
       map((response: User) => {
         const user = response;
         if (user) {
-          localStorage.setItem('user', JSON.stringify(user));
-          this.currentUserSource.next(user);
+          this.setCurrentUser(user);
         }
       })
     )
@@ -34,14 +33,18 @@ export class AccountService {  //here we're going to make a request to the API
     return this.http.post(this.baseUrl + 'account/register', model).pipe(
       map((user: User) => {
         if(user){
-          localStorage.setItem('user', JSON.stringify(user));
-          this.currentUserSource.next(user);
+          this.setCurrentUser(user);
         }
       })
     )
   }
 
   setCurrentUser(user: User) {
+    user.roles = [];
+    const roles = this.getDecodedToken(user.token).role;
+    // the roles of an user can be an array if there are multiple roles or just an atribute if there is one role, so that is why we are checking if it is an array
+    Array.isArray(roles) ? user.roles = roles : user.roles.push(roles);
+    localStorage.setItem('user', JSON.stringify(user));
     this.currentUserSource.next(user);
   }
 
@@ -49,6 +52,11 @@ export class AccountService {  //here we're going to make a request to the API
     localStorage.removeItem('user');
     this.currentUserSource.next(null);
 
+  }
+
+  getDecodedToken(token){
+    //atob allows us to decode the information inside a token
+    return JSON.parse(atob(token.split('.')[1]));
   }
 
 }
