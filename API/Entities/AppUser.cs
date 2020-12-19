@@ -19,6 +19,12 @@ namespace API.Entities
         public string Country { get; set; }
         public ICollection<Photo> Photos { get; set; }
         public ICollection<AppUserRole> UserRoles { get; set; }
+        public ICollection<AppProject> Projects { get; set; }
+
+        internal object FirstOrDefault()
+        {
+            throw new NotImplementedException();
+        }
 
 
 

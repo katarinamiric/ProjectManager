@@ -1,0 +1,12 @@
+<div class="row" class="col-4">
+    <button class="btn btn-success" (click)="openRolesModal()">
+        New Project
+    </button>
+    <hr>
+</div>
+
+<div class="row">
+    <div *ngFor="let project of projects" class="col-4">
+        <app-project-list [project]="project "></app-project-list>
+    </div>
+</div>

@@ -31,6 +31,10 @@ import { HasRoleDirective } from './_directives/has-role.directive';
 import { UserManagementComponent } from './admin/user-management/user-management.component';
 import { PhotoManagementComponent } from './admin/photo-management/photo-management.component';
 import { RolesModalComponent } from './modals/roles-modal/roles-modal.component';
+import { ProjectsComponent } from './project/projects/projects.component';
+import { ProjectListComponent } from './project/project-list/project-list.component';
+import { ProjectModalComponent } from './modals/project-modal/project-modal.component';
+
 // import { NgxSpinnerModule } from 'ngx-spinner';
 
 
@@ -56,7 +60,10 @@ import { RolesModalComponent } from './modals/roles-modal/roles-modal.component'
     HasRoleDirective,
     UserManagementComponent,
     PhotoManagementComponent,
-    RolesModalComponent
+    RolesModalComponent,
+    ProjectsComponent,
+    ProjectListComponent,
+    ProjectModalComponent
   ],
   imports: [
     BrowserModule,

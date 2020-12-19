@@ -1,0 +1,26 @@
+<div class="modal-header">
+    <h4 class="modal-title pull-left">New Project</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <app-text-input [formControl]='registerForm.controls["name"]' [label]='"Name"'>
+    </app-text-input>
+    <div class="form-check">
+        <label>Choose an assignee: </label>
+        <form #rolesRorm="ngForm">
+            <select [(ngModel)]="member" name="member" id="member" placeholder="Select...">
+            <!-- <select [formControl]='registerForm.controls["member"]'  name="member" id="member"> -->
+
+
+                <option *ngFor="let member of members" value="{{member.username}}">{{member.username}}</option>
+            </select>
+        </form>
+    </div>
+
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" (click)="bsModalRef.hide()">Cancel</button>
+    <button type="button" class="btn btn-success" (click)="createProject()">Submit</button>
+</div>

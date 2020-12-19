@@ -19,6 +19,11 @@ namespace API.Helpers
             //there is a reverse map but we don;t need it here, just a note that it exists
             CreateMap<MemberUpdateDto, AppUser>();
             CreateMap<RegisterDto, AppUser>();
+            CreateMap<ProjectDto, AppProject>();
+            CreateMap<AppProject, ProjectDto>();
+            CreateMap<MemberDto, AppUser>();
+                // .ForMember(dest => dest.User, opt => opt.MapFrom(src =>
+                // src.User.FirstOrDefault(x => )))
 
         }
     }
