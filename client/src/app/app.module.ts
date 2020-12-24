@@ -34,6 +34,20 @@ import { RolesModalComponent } from './modals/roles-modal/roles-modal.component'
 import { ProjectsComponent } from './project/projects/projects.component';
 import { ProjectListComponent } from './project/project-list/project-list.component';
 import { ProjectModalComponent } from './modals/project-modal/project-modal.component';
+import { ProjectPageComponent } from './project/project-page/project-page.component';
+import { TaskListComponent } from './project/task-list/task-list.component';
+import { TaskModalComponent } from './modals/task-modal/task-modal.component';
+import { AreaFieldInputComponent } from './_forms/area-field-input/area-field-input.component';
+import { TaskListForAdminComponent } from './project/task-list-for-admin/task-list-for-admin.component';
+import { AddTaskModalComponent } from './modals/add-task-modal/add-task-modal.component';
+import { ConfirmModalComponent } from './modals/confirm-modal/confirm-modal.component';
+import { EditProjectComponent } from './modals/edit-project/edit-project.component';
+import { LoginComponent } from './home/login/login.component';
+import { HomePageComponent } from './home/home-page/home-page.component';
+import { TaskDeveloperComponent } from './modals/task-developer/task-developer.component';
+
+
+
 
 // import { NgxSpinnerModule } from 'ngx-spinner';
 
@@ -63,7 +77,20 @@ import { ProjectModalComponent } from './modals/project-modal/project-modal.comp
     RolesModalComponent,
     ProjectsComponent,
     ProjectListComponent,
-    ProjectModalComponent
+    ProjectModalComponent,
+    ProjectPageComponent,
+    TaskListComponent,
+    TaskModalComponent,
+    AreaFieldInputComponent,
+    TaskListForAdminComponent,
+    AddTaskModalComponent,
+    ConfirmModalComponent,
+    EditProjectComponent,
+    LoginComponent,
+    HomePageComponent,
+    TaskDeveloperComponent,
+
+
   ],
   imports: [
     BrowserModule,
@@ -73,14 +100,15 @@ import { ProjectModalComponent } from './modals/project-modal/project-modal.comp
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
+
     // NgxSpinnerModule
   ],
   providers: [
-    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},     //this is our INTERCEPTOR
-    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}
-  
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },     //this is our INTERCEPTOR
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
+
   ],                      //multi:true means we want to add outs to the existing interceptors and not replace them!! 
-                          //basically angular already has it's own interceptors but we're adding our own like this
+  //basically angular already has it's own interceptors but we're adding our own like this
   bootstrap: [AppComponent]
 })
 export class AppModule { }

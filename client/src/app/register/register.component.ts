@@ -10,7 +10,7 @@ import { AccountService } from '../_services/account.service';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
-  // @Input() usersFromHomeComponent: any;
+
   
   @Output() cancelRegister = new EventEmitter();
   registerForm: FormGroup;
@@ -25,23 +25,17 @@ export class RegisterComponent implements OnInit {
     this.maxDate.setFullYear(this.maxDate.getFullYear() - 18)
   }
 
-  // initializeForm(){      THIS IS BEFORE THE FORM BUILDER
-  //   this.registerForm = new FormGroup({
-  //     username: new FormControl('Hello', Validators.required),
-  //     password: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(8)]),
-  //     confirmPassword: new FormControl('', [Validators.required, this.matchValues('password')])
-  //     //we will use a custom validator to validat econfirm password with the password
-  //   })
-  // }
+
+
 
   initializeForm(){
     this.registerForm = this.fb.group({
       gender: ['male'],
       username: ['', Validators.required],
       knownAs: ['', Validators.required],
-      dateOfBirth: ['', Validators.required],
+
       city: ['', Validators.required],
-      country: ['', Validators.required],
+
       password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(8)]],
       confirmPassword: ['', [Validators.required, this.matchValues('password')]]
     })
@@ -55,12 +49,13 @@ export class RegisterComponent implements OnInit {
   }       
 
   register(){
-    //register(this.model) but we're not doing this anymore because now we're using reactive forms
+
     this.accountService.register(this.registerForm.value).subscribe(response =>{
       this.router.navigateByUrl('/members');
     }, error =>{
       this.validationErrors = error;
     });
+    location.reload();
   }
 
   cancel(){

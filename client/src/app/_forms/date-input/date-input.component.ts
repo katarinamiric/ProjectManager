@@ -10,10 +10,11 @@ import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 export class DateInputComponent implements ControlValueAccessor {
 @Input() label: string;
 @Input() maxDate: Date;
-//this means we can partially use every configuration, this way we don't have to
+@Input() value: Date;
+
 bfConfig: Partial<BsDatepickerConfig>;
 
-//self dependencies are imported locally
+
   constructor(@Self() public ngControl: NgControl) {
     this.ngControl.valueAccessor = this;
     this.bfConfig = {

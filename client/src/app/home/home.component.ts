@@ -1,5 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { ConfirmModalComponent } from '../modals/confirm-modal/confirm-modal.component';
+import { AccountService } from '../_services/account.service';
 
 @Component({
   selector: 'app-home',
@@ -9,11 +12,15 @@ import { Component, OnInit } from '@angular/core';
 export class HomeComponent implements OnInit {
   registerMode = false;
   users: any;
+  @Output() progress = new EventEmitter();
+  bsModalRef: BsModalRef;
 
-  constructor() { }
+
+  constructor( private modalService: BsModalService, public accountService: AccountService) { }
 
   ngOnInit(): void {
-    // this.getUsers();
+
+    document.body.className = "selector";
   }
 
   registerToggle(){
@@ -21,12 +28,22 @@ export class HomeComponent implements OnInit {
     
   }
 
-  // getUsers(){
-  //   this.http.get('https://localhost:5001/api/users').subscribe(users => this.users = users)
-  // }
-
   cancelRegisterMode(event: boolean){
     this.registerMode = event;
+  }
+
+  openConfirmModal(){
+    const config = {
+      class: 'modal-dialog-centered'
+    };
+    this.bsModalRef = this.modalService.show(ConfirmModalComponent, config);
+    this.bsModalRef.content.subscribe(p => {
+      if(p){
+        this.modalService.hide();
+        return;
+      }
+
+    })
   }
 
 }

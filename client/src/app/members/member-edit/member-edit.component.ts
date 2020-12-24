@@ -1,5 +1,6 @@
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { take } from 'rxjs/operators';
 import { Member } from 'src/app/_models/member';
@@ -19,29 +20,38 @@ export class MemberEditComponent implements OnInit {
   @HostListener('window:beforeunload', ['$event']) unloadNotification($event: any) {
     if (this.editForm.dirty) {
       $event.returnValue = true;
-    }       //HostListener listens to changes made on the browser, for example if we were to open google.com in the middle of editing a user profile then we need this to tell us we haven't saved our changes
+    }       //HostListener listens to changes made on the browser
   }
 
   constructor(private accountService: AccountService, private memberService: MembersService,
-    private toastr: ToastrService) {
+    private toastr: ToastrService, private route: ActivatedRoute) {
     this.accountService.currentUser$.pipe(take(1)).subscribe(user => this.user = user);
   }
 
   ngOnInit(): void {
+    if (this.route.snapshot.paramMap.get('username') == null) {
+      this.loadCurrectUser(); 
+      return;
+    }
     this.loadMember();
   }
 
-  loadMember() {
+  loadCurrectUser() {
     this.memberService.getMember(this.user.username).subscribe(member => {
       this.member = member;
     })
   }
 
+  loadMember() {        
+    this.memberService.getMember(this.route.snapshot.paramMap.get('username')).subscribe(member => {
+      this.member = member;
+    })
+  }
+
   updateMember() {
-    this.memberService.updateMember(this.member).subscribe(() => {
+    this.memberService.updateMember(this.member, this.member.username).subscribe(() => {
       this.toastr.success('Profile updated successfully');
       this.editForm.reset(this.member);
-      console.log("USAO SAMMMMMMMM")
     })
 
   }

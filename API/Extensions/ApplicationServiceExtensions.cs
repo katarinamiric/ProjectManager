@@ -16,10 +16,11 @@ namespace API.Extensions
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IProjectRepository, ProjectRepository>();
+            services.AddScoped<ITaskRepository, TaskRepository>();
             services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
             services.AddDbContext<DataContext>(options =>
             {
-                options.UseSqlite(config.GetConnectionString("DefaultConnection"));             //passing the connection string for the database
+                options.UseSqlite(config.GetConnectionString("DefaultConnection"));  
             }); 
 
             return services;

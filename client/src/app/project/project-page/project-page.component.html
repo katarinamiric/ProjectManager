@@ -1,0 +1,22 @@
+<div class="row">
+<div class="col-2"><h2>{{project.name}}</h2></div>
+<div class="col-2"><h5 style="color: gray; text-decoration: underline;">No. of Tasks: {{noOfTasks.totalNoOfTasks}}</h5></div>
+<div class="col-2"><h5 style="color: gray;text-decoration: underline;">New Tasks: {{noOfTasks.noOfNew}}</h5></div>
+<div class="col-2"><h5 style="color: gray;text-decoration: underline;">In Progress: {{noOfTasks.noOfInProgress}}</h5></div>
+<div class="col-2"><h5 style="color: gray;text-decoration: underline;">Finished: {{noOfTasks.noOfFinished}}</h5></div>
+<div class="col-2"><h2 style="color: brown;">Complete: {{progress}} %</h2></div></div>
+<div class="tab-panel">
+    <tabset class="member-tabset">
+        <tab heading='Project management'>
+            <div class="container">
+                <app-task-list [project]="project"></app-task-list>
+            </div>
+        </tab>
+        <tab heading='Overdue Tasks'>
+            <div class="container">
+                <app-task-list-for-admin [project]="project"></app-task-list-for-admin>
+            </div>
+        </tab>
+    </tabset>
+
+</div>

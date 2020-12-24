@@ -24,7 +24,7 @@ namespace API.Data
         {
             return await _context.Users
                 .Where(x => x.UserName == username)
-                .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)  //configuration provider is the config we made in autoapperprofiles
+                .ProjectTo<MemberDto>(_mapper.ConfigurationProvider) 
                 .SingleOrDefaultAsync();
         }
 
@@ -61,7 +61,7 @@ namespace API.Data
 
         public void Update(AppUser user)
         {
-            _context.Entry(user).State = EntityState.Modified;  //flagged
+            _context.Entry(user).State = EntityState.Modified;
         }
     }
 }

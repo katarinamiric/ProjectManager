@@ -1,0 +1,18 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{title}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+  <span aria-hidden="true">&times;</span>
+  </button>
+  <br>
+
+</div>
+<div class="modal-body">
+
+<div class="row cl-4">
+  <p style="text-align: center;">{{message}}</p>
+</div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-dark" (click)="save()">{{btnOkText}}</button>
+  <button type="button" class="btn btn-secondary" (click)="cancel()" data-dismiss="modal">{{btnCancelText}}</button>
+</div>

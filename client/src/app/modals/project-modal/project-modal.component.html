@@ -7,7 +7,7 @@
 <div class="modal-body">
     <app-text-input [formControl]='registerForm.controls["name"]' [label]='"Name"'>
     </app-text-input>
-    <div class="form-check">
+    <div *appHasRole='["Admin"]' class="form-check">
         <label>Choose an assignee: </label>
         <form #rolesRorm="ngForm">
             <select [(ngModel)]="member" name="member" id="member" placeholder="Select...">

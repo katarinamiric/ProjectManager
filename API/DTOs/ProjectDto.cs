@@ -6,6 +6,6 @@ namespace API.DTOs
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public AppUser User { get; set; }
+        public MemberDto User { get; set; }
     }
 }

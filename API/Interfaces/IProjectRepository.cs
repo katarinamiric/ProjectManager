@@ -7,12 +7,23 @@ namespace API.Interfaces
 {
     public interface IProjectRepository
     {
-        // void Update(AppProject user);
-        // Task<bool> SaveAllAsync();
-        // Task<IEnumerable<AppProject>> GetProjectsAsync();
-        // Task<AppUser> GetUserByIdAsync(int id);
-        // Task<AppUser> GetProjectByNameAsync(string name);
+
+
         Task<IEnumerable<ProjectDto>> GetProjectsAsync();
+        Task<AppProject> GetAppProjectByIdAsync(int id);
+        Task<IEnumerable<ProjectDto>> GetProjectsForManagersAsync(string username);
         Task<ProjectDto> GetProjectAsync(string username);
+        Task<ProgressDto> GetOverallProgress(int id);
+        Task<ProgressDto> GetNumberOfTasksPerStatus(int id);
+        Task<IEnumerable<TaskDto>> GetNumberOfOvderdueTasks(int id);
+        Task<ProjectDto> GetProjectByIdAsync(int id);
+
+        Task<ProjectDto> createProject(ProjectDto projectDto, string username);
+        void DeleteProject(AppProject project);
+        void UpdateProject(AppProject project);
+        Task<bool> SaveAllAsync();
+
+        
+
     }
 }

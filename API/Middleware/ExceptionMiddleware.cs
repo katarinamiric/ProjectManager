@@ -11,8 +11,7 @@ namespace API.Middleware
 {
     public class ExceptionMiddleware
     {
-        //delegate is for whats next in mdidleware pipeline, logger is for logging exceptions into terminals so we can display it,
-        //IHostEnvironment is for checking the environments, is it productions or development?
+
         private readonly RequestDelegate _next;
         private readonly ILogger<ExceptionMiddleware> _logger;
         private readonly IHostEnvironment _env;
@@ -32,20 +31,20 @@ namespace API.Middleware
                 await _next(context);
             }
             catch(Exception ex){
-                _logger.LogError(ex, ex.Message);   //we're doing this so the exception is not silenced int he terminal, this way we can still log it and see it
+                _logger.LogError(ex, ex.Message);
                 context.Response.ContentType = "application/json";
                 context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
 
                 var response = _env.IsDevelopment()
                     ? new ApiException(context.Response.StatusCode, ex.Message, ex.StackTrace?.ToString())
-                                                                                    //the question mark is to check if it's null
+
                     : new ApiException(context.Response.StatusCode, "Internal Server Error");
 
 
                 var options = new JsonSerializerOptions{PropertyNamingPolicy = JsonNamingPolicy.CamelCase};
                                                             //this is going to ensure that our response goes back as normal json in camel case
 
-                var json = JsonSerializer.Serialize(response, options); //this is the response and option is camel case
+                var json = JsonSerializer.Serialize(response, options); 
 
                 await context.Response.WriteAsync(json);    //writes the argument in the response body
 

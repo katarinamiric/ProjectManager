@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace API.Entities
 {
-    public class AppUser : IdentityUser<int>        //int is the primary key
+    public class AppUser : IdentityUser<int>
     {
         public DateTime DateOfBirth { get; set; }
         public string KnownAs { get; set; }
@@ -20,6 +20,7 @@ namespace API.Entities
         public ICollection<Photo> Photos { get; set; }
         public ICollection<AppUserRole> UserRoles { get; set; }
         public ICollection<AppProject> Projects { get; set; }
+        public ICollection<AppTask> Tasks { get; set; }
 
         internal object FirstOrDefault()
         {

@@ -1,0 +1,78 @@
+<div class="modal-header">
+    <h4 class="modal-title pull-left">New Task</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <!-- <label>Status: </label>
+    <app-text-input [formControl]='registerForm.controls["status"]' [label]='"Status"'>
+    </app-text-input> -->
+    <div class="form-group">
+      <label class="control-label" style="margin-right:10px;">Status:</label>
+      <label class="radio-inline">
+          <input type="radio" value='New' [formControl]='registerForm.controls["status"]'> New
+      </label>
+      <label class="radio-inline">
+          <input type="radio" value='In Progress' [formControl]='registerForm.controls["status"]' class="ml-3"> In Progress
+      </label>
+      <label class="radio-inline">
+          <input type="radio" value='Finished' [formControl]='registerForm.controls["status"]' class="ml-3"> Finished
+      </label>
+  </div>
+
+    <label>Progress [%]: </label>
+    <app-text-input [formControl]='registerForm.controls["progress"]' [label]='"Progress"'>
+    </app-text-input>
+    <label>Deadline: </label>
+    <app-date-input [formControl]='registerForm.controls["deadline"]' 
+        [label]='"Deadline"'>
+    </app-date-input>
+    <!-- <div class="row">
+        <div class="col-sm-4">
+          <div class="mb-2">
+            <progressbar [value]="55"></progressbar>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="mb-2">
+            <progressbar [value]="22" type="warning" [striped]="true">22%</progressbar>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="mb-2">
+            <progressbar max="200" [value]="166" type="danger" [striped]="true" [animate]="true"><i>166 / 200</i></progressbar>
+          </div>
+        </div>
+      </div> -->
+    <label>Description: </label>
+    <textarea [formControl]='registerForm.controls["description"]' placeholder="Description" name="" id="" cols="55" rows="2"></textarea>
+
+    <p>Form value: {{registerForm.value | json}}</p>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div *appHasRole='["Admin", "Manager"]' class="form-check">
+        <label>Choose an assignee: </label>
+        <form #rolesRorm="ngForm">
+            <select [(ngModel)]="member" name="member" id="member" placeholder="Select...">
+            <!-- <select [formControl]='registerForm.controls["member"]'  name="member" id="member"> -->
+
+
+                <option *ngFor="let member of members" value="{{member.username}}">{{member.username}}</option>
+            </select>
+        </form>
+    </div>
+
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" (click)="bsModalRef.hide()">Cancel</button>
+    <button type="button" class="btn btn-success" (click)="createTask()">Submit</button>
+</div>

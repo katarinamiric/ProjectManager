@@ -1,0 +1,40 @@
+
+<!-- <div class="row" class="col-4 pull-right">
+    <button class="btn btn-success">
+        New Task
+    </button>
+    <hr>
+</div> -->
+<div class="row">
+    <table class="table">
+        <tr>
+            <th style="width: 30%;">No.</th>
+            <th style="width: 30%;">Status</th>
+            <th style="width: 40%;">Task progress:</th>
+            <th style="width: 30%;">Assigned to:</th>
+            <th style="width: 30%;">View task</th>
+        </tr>
+        <tr *ngFor="let task of tasks; index as i">
+            <td>{{i+1}}</td>
+            <td>{{task.status}}</td>
+            <td>
+                <div class="col-sm-4">
+                    <div *ngIf="task.progress < 40" class="mb-2">
+                        <progressbar [value]="task.progress" type="danger" [striped]="true">{{task.progress}}%
+                        </progressbar>
+                    </div>
+                    <div *ngIf="task.progress > 40 && task.progress < 60" class="mb-2">
+                        <progressbar [value]="task.progress" type="warning" [striped]="true">{{task.progress}}%
+                        </progressbar>
+                    </div>
+                    <div *ngIf="task.progress > 60" class="mb-2">
+                        <progressbar [value]="task.progress" type="success" [striped]="true">{{task.progress}}%
+                        </progressbar>
+                    </div>
+                </div>
+            </td>
+            <td>{{task.user.knownAs}}</td>
+            <td><button (click)="openRolesModal(task)" class="btn-info">Edit Task</button></td>
+        </tr>
+    </table>
+</div>

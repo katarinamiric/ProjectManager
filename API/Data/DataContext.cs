@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Data
 {
-    // public class DataContext : DbContext
     public class DataContext : IdentityDbContext<AppUser, AppRole, int,
          IdentityUserClaim<int>, AppUserRole, IdentityUserLogin<int>, 
           IdentityRoleClaim<int>, IdentityUserToken<int>>
@@ -14,9 +13,8 @@ namespace API.Data
         {
         }
 
-        // public DbSet<AppUser> Users { get; set; }
-        // we don't need this anymore cause we're using Identity
         public DbSet<AppProject> Projects { get; set; }
+        public DbSet<AppTask> Tasks { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

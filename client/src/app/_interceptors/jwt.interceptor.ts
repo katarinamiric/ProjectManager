@@ -16,13 +16,13 @@ export class JwtInterceptor implements HttpInterceptor {
   constructor(private accountService: AccountService) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    let currentUser: User;    //we're using let instead of const because const has to be initialized and we don't have the current user right now
+    let currentUser: User;   
     
     this.accountService.currentUser$.pipe(take(1)).subscribe(user => currentUser = user);
     if(currentUser){
       request = request.clone({
         setHeaders: {
-          Authorization: `Bearer ${currentUser.token}`        //we're using the tilda quotes cause it allows us to concatenate directly inside the string
+          Authorization: `Bearer ${currentUser.token}` 
         }
       })
     }

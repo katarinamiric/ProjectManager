@@ -1,11 +1,20 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <div class="card mb-4">
     <div class="card-image-wrapper">
-        <img src="{{'./assets/user.png'}}"  alt="{{project.name}}" class="card-img-top">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="deleteProject(project.id)">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <img src="{{'./assets/download.png'}}" alt="{{project.name}}" class="card-img-top">
         <ul class="list-inline member-icons animate text-center">
-            <li class="list-inline-item"><button routerLink='/project/{{project.name}}' style="width: 50px; height: 30px;" class="btn btn-dark">
-                    <i class="fa fa-user"></i></button></li>
-            <li class="list-inline-item"><button routerLink='/project/{{project.name}}' style="width:50px; height: 30px;" aria-placeholder="View Tasks" class="btn btn-dark">
-                    <i class="fa fa-user"></i>View Tasks</button></li>
+            <li class="list-inline-item"><button routerLink='/projects/{{project.id}}'
+                    style="width: 50px; height: 30px;" class="btn btn-success">
+                    <i class="fa fa-info"></i></button></li>
+            <li class="list-inline-item"><button (click)="openEditModal()" style="width: 50px; height: 30px;"
+                    class="btn btn-warning">
+                    <i class="fa fa-bars"></i></button></li>
+            <li class="list-inline-item"><button *appHasRole='["Admin"]' (click)="deleteProject(project.id)"
+                    style="width:50px; height: 30px;" aria-placeholder="View Tasks" class="btn btn-danger">
+                    <i class="fa fa-close"></i>Delete</button></li>
             <!-- <li class="list-inline-item"><button class="btn btn-primary">
                     <i class="fa fa-heart"></i></button></li>
             <li class="list-inline-item"><button class="btn btn-primary">

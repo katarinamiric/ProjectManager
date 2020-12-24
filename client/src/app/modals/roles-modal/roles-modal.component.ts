@@ -11,9 +11,7 @@ export class RolesModalComponent implements OnInit {
 @Input() updateSelectedRoles = new EventEmitter();
 user: User;
 roles: any[];
-  // title: string;
-  // list: any[] = [];
-  // closeBtnName: string;
+
 
   constructor(public bsModalRef: BsModalRef) { }
 

@@ -16,7 +16,7 @@ export class AdminGuard implements CanActivate {
 
     return this.accountService.currentUser$.pipe(
       map(user => {
-        if (user.roles.includes('Admin') || user.roles.includes('Moderator')) {
+        if (user.roles.includes('Admin') || user.roles.includes('Manager')) {
           return true;
         }
         this.toastr.error('You cannot enter this area');

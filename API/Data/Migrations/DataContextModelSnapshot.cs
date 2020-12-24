@@ -62,6 +62,39 @@ namespace API.Data.Migrations
                     b.ToTable("AspNetRoles");
                 });
 
+            modelBuilder.Entity("API.Entities.AppTask", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("Deadline")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Progress")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("ProjectId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Tasks");
+                });
+
             modelBuilder.Entity("API.Entities.AppUser", b =>
                 {
                     b.Property<int>("Id")
@@ -290,6 +323,21 @@ namespace API.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("API.Entities.AppTask", b =>
+                {
+                    b.HasOne("API.Entities.AppProject", "Project")
+                        .WithMany()
+                        .HasForeignKey("ProjectId");
+
+                    b.HasOne("API.Entities.AppUser", "User")
+                        .WithMany("Tasks")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Project");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("API.Entities.AppUserRole", b =>
                 {
                     b.HasOne("API.Entities.AppRole", "Role")
@@ -366,6 +414,8 @@ namespace API.Data.Migrations
                     b.Navigation("Photos");
 
                     b.Navigation("Projects");
+
+                    b.Navigation("Tasks");
 
                     b.Navigation("UserRoles");
                 });

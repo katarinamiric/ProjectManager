@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { take } from 'rxjs/operators';
 import { ProjectModalComponent } from 'src/app/modals/project-modal/project-modal.component';
 import { RolesModalComponent } from 'src/app/modals/roles-modal/roles-modal.component';
 import { Project } from 'src/app/_models/project';
+import { User } from 'src/app/_models/user';
+import { AccountService } from 'src/app/_services/account.service';
 import { ProjectService } from 'src/app/_services/project.service';
 
 @Component({
@@ -14,8 +17,12 @@ export class ProjectsComponent implements OnInit {
   projects: Project[];
   bsModalRef: BsModalRef;
   project: Project;
+  user: User;
+  overallProgress: number;
 
-  constructor(private projectService: ProjectService, private modalService: BsModalService) { }
+  constructor(private accountService: AccountService, private projectService: ProjectService, private modalService: BsModalService) {
+    this.accountService.currentUser$.pipe(take(1)).subscribe(user => this.user = user);
+  }
 
   ngOnInit(): void {
     this.loadProjects();
@@ -23,42 +30,24 @@ export class ProjectsComponent implements OnInit {
 
 
   loadProjects() {
-    this.projectService.getProjects().subscribe(projects => {
+    if (this.user.roles.includes("Admin")) {
+      this.projectService.getProjects().subscribe(projects => {
+        this.projects = projects;
+        return;
+      })
+    }else{
+
+    this.projectService.getProjectsForManagers(this.user.username).subscribe(projects => {
       this.projects = projects;
     })
   }
+  }
 
-  // openRolesModal() {
-  //   // this.bsModalRef = this.modalService.show(RolesModalComponent);
-  //   const config = {
-  //     class: 'modal-dialog-centered',
-  //     // initialState: {
-  //     //   user,
-  //     //   roles: this.getRolesArray(user)
-  //     // }
-  //   }
-  //   this.bsModalRef = this.modalService.show(RolesModalComponent, config);
-  //   // this.bsModalRef.content.updateSelectedRoles.subscribe(values =>{
-  //   //   const rolesToUpdate = {
-  //   //     roles: [...values.filter(el => el.checked === true).map(el => el.name)]
-  //   //   };
-  //     // if(rolesToUpdate){
-  //     //   this.projectService.createProject(this.project).subscribe(() =>{
-  //     //     // user.roles = [...rolesToUpdate.roles]
-  //     //   })
-  //     // }
-  //   // })
-  // }
+
 
   openRolesModal() {
     const config = {
-      // list: [
-      //   'Open a modal with component',
-      //   'Pass your data',
-      //   'Do something else',
-      //   '...'
-      // ],
-      // title: 'Modal with component'
+     
     };
     this.bsModalRef = this.modalService.show(ProjectModalComponent, config);
     this.bsModalRef.content.updatePage.subscribe(value => {
@@ -69,5 +58,7 @@ export class ProjectsComponent implements OnInit {
     })
     this.bsModalRef.content.closeBtnName = 'Close';
   }
+
+
 }
 

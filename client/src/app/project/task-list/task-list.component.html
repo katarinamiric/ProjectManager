@@ -1,0 +1,53 @@
+<div class="row">
+    <div class="col-10"></div>
+<div [hidden]="!page" class="row" class="col-2 pull-right">
+    <button class="btn btn-success" (click)="openRolesModalAdd()">
+        New Task
+    </button>
+    
+
+
+</div>
+
+
+</div>
+<h1 [hidden]="page">Your Tasks</h1>
+<hr>
+<div class="row">
+    <table class="table">
+        <tr>
+            <th style="width: 10%;">No.</th>
+            <th style="width: 20%;">Status:</th>
+            <th style="width: 40%; position: relative;">Task progress:</th>
+            <th style="width: 20%;">Assigned to:</th>
+            <th style="width: 20%;">View task</th>
+            <th style="width: 5%;">Delete task</th>
+        </tr>
+        <tr *ngFor="let task of tasks;index as i;">
+            <td>{{i+1}}</td>
+            <td>{{task.status}}</td>
+            <td>
+                <div class="col-sm-4">
+                    <div *ngIf="task.progress <= 40" class="mb-2">
+                        <progressbar [value]="task.progress" type="danger" [striped]="true">{{task.progress}}%
+                        </progressbar>
+                    </div>
+                    <div *ngIf="task.progress > 40 && task.progress <= 60" class="mb-2">
+                        <progressbar [value]="task.progress" type="warning" [striped]="true">{{task.progress}}%
+                        </progressbar>
+                    </div>
+                    <div *ngIf="task.progress > 60" class="mb-2">
+                        <progressbar [value]="task.progress" type="success" [striped]="true">{{task.progress}}%
+                        </progressbar>
+                    </div>
+                </div>
+            </td>
+            <td>{{task.user.knownAs}}</td>
+            <td><button *appHasRole="['Admin','Manager']" (click)="openRolesModal(task)" class="btn-dark">Edit Task</button>
+  <button *appHasRole="['Developer']" (click)="openRolesModal2(task)" class="btn-dark">Edit Task</button></td>
+            <td><button type="button" class="close pull-right" aria-label="Close" (click)="deleteTask(task.id)">
+                    <span aria-hidden="true">&times;</span>
+                </button></td>
+        </tr>
+    </table>
+</div>

@@ -11,7 +11,7 @@ namespace API.Data
 {
     public class Seed
     {
-        // public static async Task SeedUser(DataContext context)
+
         public static async Task SeedUser(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
         {
             if (await userManager.Users.AnyAsync()) return;
@@ -21,9 +21,9 @@ namespace API.Data
             if (users == null) return;
 
             var roles = new List<AppRole>{
-                new AppRole{Name="Member"},
-                new AppRole{Name="Admin"},
-                new AppRole{Name="Moderator"}
+                new AppRole{Name="Developer"},
+                new AppRole{Name="Manager"},
+                new AppRole{Name="Admin"}
             };
 
             foreach (var role in roles)
@@ -34,17 +34,13 @@ namespace API.Data
 
             foreach (var user in users)
             {
-                // using var hmac = new HMACSHA512();
 
                 user.UserName = user.UserName.ToLower();
 
-                // user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("pa$$w0rd"));
-                // user.PasswordSalt = hmac.Key;
 
                 await userManager.CreateAsync(user, "Pa$$w0rd");
-                await userManager.AddToRoleAsync(user, "Member");
+                await userManager.AddToRoleAsync(user, "Developer");
 
-                //user manager saves in the database!!!!!!!!!!!!!!!!
             }
 
             var admin = new AppUser
@@ -53,8 +49,8 @@ namespace API.Data
             };
 
             await userManager.CreateAsync(admin, "Pa$$w0rd");
-            await userManager.AddToRolesAsync(admin, new[] {"Admin", "Moderator"});
-            //our admin will have 2 roles
+            await userManager.AddToRolesAsync(admin, new[] {"Admin"});
+
 
         }
     }

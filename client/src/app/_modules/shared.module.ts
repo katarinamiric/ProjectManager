@@ -5,6 +5,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { BsDatepickerConfig, BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 
 
 
@@ -14,19 +15,22 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     CommonModule,
     BsDropdownModule.forRoot(),
     ToastrModule.forRoot({
-        positionClass:'toast-botton-right'    //this is housekeeping, we will be adding third party modules to this shared module and then import it into the app module
+        positionClass:'toast-botton-right'  
       }
     ),
     TabsModule.forRoot(),
     BsDatepickerModule.forRoot(),
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    ProgressbarModule.forRoot()
+    
   ],
   exports: [
     BsDropdownModule,
     ToastrModule,
     TabsModule,
     BsDatepickerModule,
-    ModalModule
+    ModalModule,
+    ProgressbarModule
   ]
 })
 export class SharedModule { }

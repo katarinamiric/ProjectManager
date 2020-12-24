@@ -18,12 +18,20 @@ export class MembersService {
     return this.http.get<Member[]>(this.baseUrl + 'users');
   }
 
+  getManagers() {
+    return this.http.get<Member[]>(this.baseUrl + 'users/managers');
+  }
+
+  getDevelopers() {
+    return this.http.get<Member[]>(this.baseUrl + 'users/developers');
+  }
+
   getMember(username: string) {
     return this.http.get<Member>(this.baseUrl + 'users/' + username);
   }
 
-  updateMember(member: Member) {
-    return this.http.put(this.baseUrl + 'users', member);
+  updateMember(member: Member, username: string) {
+    return this.http.put(this.baseUrl + 'users' + "?username=" + username, member);
   }
 
 }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using API.Data;
 using API.DTOs;
@@ -10,7 +11,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    // [Authorize]
     public class ProjectController : BaseApiController
     {
         private readonly IMapper _mapper;
@@ -27,33 +27,86 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProjectDto>>> GetProjects()  //we could've used List<>
+        public async Task<ActionResult<IEnumerable<ProjectDto>>> GetProjects() 
         {
             var projects = await _projectRepository.GetProjectsAsync();
             return Ok(projects);               //Ok takes an ActionResultObjectValue
         }
+        [HttpGet("get-project/{id}")]
+        public async Task<ActionResult<ProjectDto>> GetProjects(int id)  
+        {
+            var project = await _projectRepository.GetProjectByIdAsync(id);
+            return Ok(project);               
+        }
+
+        [HttpGet("{username}")]
+        public async Task<ActionResult<IEnumerable<ProjectDto>>> GetProjectsForManagers(string username)
+        {
+            var projects = await _projectRepository.GetProjectsForManagersAsync(username);
+
+            return Ok(projects);               
+        }
+
+        [HttpGet("overall-progress/{id}")]
+        public async Task<ActionResult<int>> GetOverallProgress(int id) 
+        {
+            var projects = await _projectRepository.GetOverallProgress(id);
+            var final = projects.Progress;
+
+            return Ok(final);         
+        }
+
+        [HttpGet("per-status/{id}")]
+        public async Task<ActionResult<ProgressDto>> GetNumberOfTasksPerStatus(int id) 
+        {
+            var projects = await _projectRepository.GetNumberOfTasksPerStatus(id);
 
 
 
-        [HttpPost("{username}")]
+            return Ok(projects);              
+        }
+
+        [HttpGet("overdue-tasks/{id}")]
+        public async Task<ActionResult<IEnumerable<TaskDto>>> GetNumberOfOvderdueTasks(int id)  
+        {
+            var projects = await _projectRepository.GetNumberOfOvderdueTasks(id);
+
+
+
+            return Ok(projects);          
+        }
+
+
+
+        [HttpPost("{username}")]  
         public async Task<ActionResult<ProjectDto>> CreateProject(ProjectDto projectDto, string username)
         {
-            var user = await _userRepository.GetUserByUsernameAsync(username);
+            var project = await _projectRepository.createProject(projectDto, username);
+            return Ok(project);
+        }
 
-            // var userMapped = _mapper.Map<AppUser>(user);
-            projectDto.User = user;
-            var project = _mapper.Map<AppProject>(projectDto);
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateTask(ProjectUpdateDto projectDto, int id)
+        {
+            var project = await _projectRepository.GetAppProjectByIdAsync(id);
+            _mapper.Map(projectDto, project);
+            _projectRepository.UpdateProject(project);
 
-            _context.Projects.Add(project);
+            if (await _projectRepository.SaveAllAsync()) return NoContent();   //saveallasync returns a bool true if there are > 0 written in the database
+            return BadRequest("Failed to update user");
+        }
 
-            var result = await _context.SaveChangesAsync();
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteProject(int id)
+        {
+            var project = await _projectRepository.GetProjectByIdAsync(id);
+            var projectToDelete = _mapper.Map<AppProject>(project);
+            _projectRepository.DeleteProject(projectToDelete);
 
-            return new ProjectDto
-            {
-                Name = project.Name
-            };
 
+            return Ok("Project deleted");
 
         }
+
     }
 }

@@ -17,7 +17,7 @@ export class MemberDetailComponent implements OnInit {
     this.loadMember();
   }
 
-  loadMember(){         //paramMap.get... is the param in the routing.module.ts (/:username)
+  loadMember(){         
     this.memberService.getMember(this.route.snapshot.paramMap.get('username')).subscribe(member => {
       this.member = member;
     })

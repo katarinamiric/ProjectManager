@@ -1,0 +1,16 @@
+<body >
+    <div *ngIf="!(accountService.currentUser$ === null)" class="container-mt5">
+        <div   style='text-align: center;'>
+        <br>
+        <h1>Welcome!</h1>
+        <br>
+        <br>
+        <h2 style="color: gray;">Here you can manage your tasks, view deadlines and track your progress!</h2>
+        <hr>
+        <br>
+        <button *appHasRole="['Admin']" class="btn btn-success my-2 my-sm-0" routerLink='/members' type="btn btn-dark">Start editing</button>
+        <button *appHasRole="['Manager']" class="btn btn-success my- my-sm-0" routerLink='/projects' type="btn btn-dark">View projects</button>
+        <button *appHasRole="['Developer']"  class="btn btn-success my-2 my-sm-0" routerLink='/task' type="btn btn-dark">View Tasks</button>
+       
+    </div></div>
+    <app-login></app-login>

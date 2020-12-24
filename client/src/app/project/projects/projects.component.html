@@ -1,9 +1,19 @@
-<div class="row" class="col-4">
-    <button class="btn btn-success" (click)="openRolesModal()">
-        New Project
-    </button>
+
+<div class="row">
+<div class="col-10">
+    <h2>Your Projects</h2>
+</div>
+
+    <div class="col4"><button class="btn btn-success" (click)="openRolesModal()">
+            New Project
+        </button></div>
+
     <hr>
 </div>
+<hr>
+<div class="verticalLine">
+
+  </div>
 
 <div class="row">
     <div *ngFor="let project of projects" class="col-4">

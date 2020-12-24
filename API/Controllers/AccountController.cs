@@ -19,7 +19,7 @@ namespace API.Controllers
         private readonly IMapper _mapper;
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
-        // public AccountController(DataContext context, ITokenService tokenService, IMapper mapper)
+
         public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,
              ITokenService tokenService, IMapper mapper)
         {
@@ -28,7 +28,7 @@ namespace API.Controllers
             _signInManager = signInManager;
             _userManager = userManager;
 
-            // _context = context;
+
         }
 
 
@@ -39,23 +39,22 @@ namespace API.Controllers
 
             var user = _mapper.Map<AppUser>(registerDto);
 
-            // using var hmac = new HMACSHA512();  //USING WILL CALL THE METHOD DISPOSE INSIDE hma...class 
+
 
 
             user.UserName = registerDto.Username.ToLower();
-            // user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password));
-            // user.PasswordSalt = hmac.Key;
+
+
 
             var result = await _userManager.CreateAsync(user, registerDto.Password);
-            
-            if(!result.Succeeded) return BadRequest(result.Errors);
 
-            var roleResult = await _userManager.AddToRoleAsync(user, "Member");
+            if (!result.Succeeded) return BadRequest(result.Errors);
 
-            if(!roleResult.Succeeded) return BadRequest(result.Errors);
+            var roleResult = await _userManager.AddToRoleAsync(user, "Developer");
 
-            // _context.Users.Add(user);
-            // await _context.SaveChangesAsync();
+            if (!roleResult.Succeeded) return BadRequest(result.Errors);
+
+
 
             return new UserDto
             {
@@ -70,7 +69,7 @@ namespace API.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
-            // var user = await _context.Users
+
             var user = await _userManager.Users
                 .SingleOrDefaultAsync(x => x.UserName == loginDto.Username.ToLower());
 
@@ -78,18 +77,7 @@ namespace API.Controllers
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
 
-            if(!result.Succeeded) return Unauthorized();
-
-            
-
-            // using var hmac = new HMACSHA512(user.PasswordSalt);
-
-            // var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password));
-
-            // for (int i = 0; i < computedHash.Length; i++)
-            // {
-            //     if (computedHash[i] != user.PasswordHash[i]) return Unauthorized("Invalid password.");
-            // }
+            if (!result.Succeeded) return Unauthorized();
 
             return new UserDto
             {
@@ -102,6 +90,18 @@ namespace API.Controllers
         private async Task<bool> UserExists(string username)
         {
             return await _userManager.Users.AnyAsync(x => x.UserName == username.ToLower());
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteUser(int id)
+        {
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            // var taskToDelete = _mapper.Map<AppTask>(task);
+            var result = _userManager.DeleteAsync(user);
+
+
+            return Ok("User deleted");
+
         }
     }
 }

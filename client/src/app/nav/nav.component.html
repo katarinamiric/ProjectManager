@@ -6,24 +6,24 @@
         <ul class="navbar-nav me-auto mb-2 mb-md-0">
             <!-- adding a ng-container is useful cause it doesnt generate html so if a conditional is used it won't change the styling -->
             <ng-container *ngIf="accountService.currentUser$ | async">
-                <li class="nav-item">
+                <li *appHasRole='["Admin"]' class="nav-item">
                     <a class="nav-link" aria-current="page" routerLink='/members' routerLinkActive='active'>Members</a>
                 </li>
-                <li class="nav-item">
+                <li *appHasRole='["Admin", "Manager"]' class="nav-item">
                     <a class="nav-link" routerLink='/projects' routerLinkActive='active'>Projects</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" routerLink='/lists' routerLinkActive='active'>Lists</a>
+                <li *appHasRole='"Developer"' class="nav-item">
+                    <a class="nav-link" routerLink='/task' routerLinkActive='active'>Tasks</a>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a class="nav-link" routerLink='/messages' routerLinkActive='active'>Messages</a>
-                </li>
-                <li *appHasRole='["Admin", "Moderator"]' class="nav-item">
+                </li> -->
+                <li *appHasRole='["Admin"]' class="nav-item">
                     <a class="nav-link" routerLink='/admin' routerLinkActive='active'>Admin</a>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a class="nav-link" routerLink='/errors' routerLinkActive='active'>Errors </a>
-                </li>
+                </li> -->
             </ng-container>
         </ul>
         <!-- this async automatically unsubscribes from the observable -->
@@ -36,16 +36,7 @@
             </div>
         </div>
 
-        <form *ngIf="(accountService.currentUser$ | async) === null" #loginForm="ngForm"
-            class="form-inline mt-2 mt-md-0" (ngSubmit)="login()" autocomplete="off">
-
-            <input name="username" [(ngModel)]="model.username" class="form-control me-2" type="text"
-                placeholder="Username" aria-label="Search">
-            <input name="password" [(ngModel)]="model.password" class="form-control me-2" type="password"
-                placeholder="Password" aria-label="Search">
-            <button class="btn btn-success my-2 my-sm-0" type="submit">Login</button>
-            <!-- if a button is type submit it means it will call the login() method -->
-        </form>
+       
     </div>
 
 

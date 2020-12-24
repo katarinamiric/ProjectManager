@@ -25,7 +25,7 @@ export class HasRoleDirective implements OnInit{
       return;
     }
 
-    // some checks if the callback function returns true for any element of the array so if one role matches the user is authorized
+
     if(this.user?.roles.some(r => this.appHasRole.includes(r))){
       this.viewContainerRef.createEmbeddedView(this.templateRef);
     }else{

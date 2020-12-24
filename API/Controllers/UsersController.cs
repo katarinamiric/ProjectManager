@@ -8,6 +8,7 @@ using API.Entities;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,44 +18,86 @@ namespace API.Controllers
     public class UsersController : BaseApiController
     {
         private readonly IMapper _mapper;
+        private readonly UserManager<AppUser> _userManager;
 
         private readonly IUserRepository _userRepository;
-        public UsersController(IUserRepository userRepository, IMapper mapper)
+        public UsersController(IUserRepository userRepository, UserManager<AppUser> userManager, IMapper mapper)
         {
+            _userManager = userManager;
             _mapper = mapper;
             _userRepository = userRepository;
 
         }
 
-        // [Authorize(Roles = "Admin")]
+
         [HttpGet]
-        // [AllowAnonymous]
-        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()  //we could've used List<>
+
+        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers() 
         {
             var users = await _userRepository.GetMembersAsync();
-            return Ok(users);               //Ok takes an ActionResultObjectValue
+            return Ok(users);             
         }
 
-        //api/users/3
-        // [Authorize]
-        // [Authorize(Roles = "Member")]
         [HttpGet("{username}")]
-        public async Task<ActionResult<MemberDto>> GetUser(string username)  //we could've used List<>
+        public async Task<ActionResult<MemberDto>> GetUser(string username)  
         {
             return await _userRepository.GetMemberAsync(username);
         }
 
-        [HttpPut]
-        public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto)
+        [HttpGet("managers")]
+        public async Task<ActionResult<MemberDto>> GetUsersWithRoleManager(string username) 
         {
-            var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;    //gives us users username from the token that the api uses to authenticate this user!!!!
-            var user = await _userRepository.GetUserByUsernameAsync(username);
+            var users = await _userManager.Users
+                 .Include(r => r.UserRoles)
+                 .ThenInclude(r => r.Role)
+                 .OrderBy(u => u.UserName)
+                 .Select(u => new
+                 {
+                     u.Id,
+                     Username = u.UserName,
+                     Roles = u.UserRoles.Select(r => r.Role.Name).ToList()
+                 })
+                 .Where(r => r.Roles.Contains("Manager"))
+                 .ToListAsync();
 
-            //user.City = memberUpdateDto.city; we would have to do this manually or just use the line below
+            return Ok(users);
+
+        }
+        [HttpGet("developers")]
+        public async Task<ActionResult<MemberDto>> GetUsersWithRoleDeveloper(string username) 
+        {
+
+            var users = await _userManager.Users
+                 .Include(r => r.UserRoles)
+                 .ThenInclude(r => r.Role)
+                 
+                 .OrderBy(u => u.UserName)
+                 .Select(u => new
+                 {
+                     u.Id,
+                     Username = u.UserName,
+                     Roles = u.UserRoles.Select(r => r.Role.Name).ToList(),
+                     Tasks = u.Tasks.Select(t => t.Id)
+
+                 })
+                 .Where(r => r.Roles.Contains("Developer") && r.Tasks.Count() < 3)
+                 .ToListAsync();
+
+
+            return Ok(users);
+
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto, [FromQuery] string username)
+        {
+            var user = await _userRepository.GetUserByUsernameAsync(username);
             _mapper.Map(memberUpdateDto, user);
             _userRepository.Update(user);
-            if (await _userRepository.SaveAllAsync()) return NoContent();   //saveallasync returns a bool true if there are > 0 written in the database
+            if (await _userRepository.SaveAllAsync()) return NoContent();
             return BadRequest("Failed to update user");
         }
+
+        
     }
 }

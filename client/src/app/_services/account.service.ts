@@ -6,15 +6,14 @@ import { environment } from 'src/environments/environment';
 import { User } from '../_models/user';
 
 
-@Injectable({         //service can be injected into other components or services
-  //angular service is a singleton
+@Injectable({         
   providedIn: 'root'
 })
-export class AccountService {  //here we're going to make a request to the API
+export class AccountService { 
 
-  baseUrl = environment.apiUrl;   //this is not hardcoded anymore
+  baseUrl = environment.apiUrl;  
   private currentUserSource = new ReplaySubject<User>(1);  //1 is the size of buffer
-  currentUser$ = this.currentUserSource.asObservable(); //$ sign is a convention for observable
+  currentUser$ = this.currentUserSource.asObservable(); 
 
   constructor(private http: HttpClient) { }
 
@@ -42,7 +41,7 @@ export class AccountService {  //here we're going to make a request to the API
   setCurrentUser(user: User) {
     user.roles = [];
     const roles = this.getDecodedToken(user.token).role;
-    // the roles of an user can be an array if there are multiple roles or just an atribute if there is one role, so that is why we are checking if it is an array
+    // the roles of an user can be an array if there are multiple roles or just an atribute if there is one role
     Array.isArray(roles) ? user.roles = roles : user.roles.push(roles);
     localStorage.setItem('user', JSON.stringify(user));
     this.currentUserSource.next(user);
@@ -57,6 +56,11 @@ export class AccountService {  //here we're going to make a request to the API
   getDecodedToken(token){
     //atob allows us to decode the information inside a token
     return JSON.parse(atob(token.split('.')[1]));
+  }
+
+  deleteUser(id: number){
+    return this.http.delete(this.baseUrl + 'account/' + id);
+
   }
 
 }

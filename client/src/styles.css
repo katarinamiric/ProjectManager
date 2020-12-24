@@ -1,3 +1,7 @@
+.color{
+ background-color: #FFF3FF ;
+}
+
 .tab-panel {
     border: 1px solid #ddd;
     padding: 10px;
@@ -6,6 +10,7 @@
   
   .nav-tabs > li.open, .member-tabset > .nav-tabs > li:hover {
     border-bottom: 4px solid #fbcdcf;
+    /* border-bottom: 4px solid purple; */
   }
   
   .member-tabset > .nav-tabs > li.open > a, .member-tabset > .nav-tabs > li:hover > a {

@@ -6,7 +6,7 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
   templateUrl: './text-input.component.html',
   styleUrls: ['./text-input.component.css']
 })
-// ControlValueAccessor is an interface that creates a bridge with the reactive form I believe
+
 export class TextInputComponent implements ControlValueAccessor {
 @Input() label: string;
 @Input() type = 'text';
